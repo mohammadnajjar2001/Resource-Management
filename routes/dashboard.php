@@ -11,10 +11,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     Route::get('scan-barcode', [ProductController::class, 'scanBarcode'])->name('products.scanBarcode');
     Route::post('/products/price', [ProductController::class, 'getPriceByBarcode'])->name('products.getPriceByBarcode');
-    
+
     Route::post('products/uploadBarcode', [ProductController::class, 'uploadBarcode'])->name('products.uploadBarcode');
 
-    Route::resource('second-products',SecondProductController::class);
+    Route::resource('second-products', SecondProductController::class);
+
+    Route::post('/products/import', [SecondProductController::class, 'import'])->name('products.import');
+    Route::post('/second-products/{id}/reduce-unit', [SecondProductController::class, 'reduceUnit'])->name('second-products.reduce');
 
     Route::get('calculator', function () {
         return view('pages.calculator');

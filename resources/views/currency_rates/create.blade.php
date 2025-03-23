@@ -9,12 +9,12 @@
 
             <div class="mb-3">
                 <label for="usd_to_try" class="form-label">الدولار إلى الليرة التركية</label>
-                <input type="number" step="1" name="usd_to_try" class="form-control" required>
+                <input  name="usd_to_try" class="form-control" required>
             </div>
 
             <div class="mb-3">
                 <label for="usd_to_syp" class="form-label">الدولار إلى الليرة السورية</label>
-                <input type="number" step="10" name="usd_to_syp" class="form-control" required>
+                <input  name="usd_to_syp" class="form-control" required>
             </div>
 
             <div class="d-flex justify-content-between">

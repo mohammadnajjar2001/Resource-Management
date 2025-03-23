@@ -35,24 +35,44 @@
                                 @enderror
                             </div>
 
-                            <!-- سعر المنتج -->
+                            <!-- عدد العبوات -->
                             <div class="mb-3">
-                                <label for="price" class="form-label">السعر</label>
-                                <input type="number" id="price" name="price"
-                                    class="form-control @error('price') is-invalid @enderror"
-                                    value="{{ old('price', $SecondProduct->price) }}" required>
-                                @error('price')
+                                <label for="package_count" class="form-label">عدد العبوات</label>
+                                <input id="package_count" name="package_count"
+                                    class="form-control @error('package_count') is-invalid @enderror"
+                                    value="{{ old('package_count', $SecondProduct->package_count) }}">
+                                @error('package_count')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- الكمية المتوفرة -->
+                            <!-- عدد الوحدات -->
                             <div class="mb-3">
-                                <label for="stock" class="form-label">المخزون</label>
-                                <input type="number" id="stock" name="stock"
-                                    class="form-control @error('stock') is-invalid @enderror"
-                                    value="{{ old('stock', $SecondProduct->stock) }}" required>
-                                @error('stock')
+                                <label for="unit_count" class="form-label">عدد الوحدات</label>
+                                <input id="unit_count" name="unit_count"
+                                    class="form-control @error('unit_count') is-invalid @enderror"
+                                    value="{{ old('unit_count', $SecondProduct->unit_count) }}" required>
+                                @error('unit_count')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- سعر المنتج بالدولار -->
+                            <div class="mb-3">
+                                <label for="price_usd" class="form-label">السعر بالدولار</label>
+                                <input type="number" id="price_usd" name="price_usd"
+                                    class="form-control @error('price_usd') is-invalid @enderror"
+                                    value="{{ old('price_usd', $SecondProduct->price_usd) }}" step="0.01" required>
+                                @error('price_usd')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- الملاحظات -->
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">الملاحظات</label>
+                                <textarea id="notes" name="notes" class="form-control @error('notes') is-invalid @enderror" rows="3">{{ old('notes', $SecondProduct->notes) }}</textarea>
+                                @error('notes')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

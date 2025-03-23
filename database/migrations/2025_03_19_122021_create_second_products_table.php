@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('second_products', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // اسم المنتج
-            $table->decimal('price', 10, 2); // سعر المنتج
-            $table->integer('stock')->default(0); // الكمية المتوفرة
+            $table->string('name')->nullable(); // اسم المنتج
+            $table->integer('package_count')->nullable(); // العدد بالطرد (يمكن أن يكون غير مطلوب)
+            $table->decimal('unit_count', 10, 2)->nullable();
+            $table->decimal('price_usd', 10, 2)->default(0); // سعر المنتج بالدولار
+            $table->text('notes')->nullable(); // ملاحظات
             $table->timestamps();
         });
     }

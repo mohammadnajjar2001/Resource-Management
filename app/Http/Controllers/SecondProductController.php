@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CurrencyRate;
 use App\Models\SecondProduct;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SecondProductsImport;
 
 class SecondProductController extends Controller
 {
@@ -33,9 +35,11 @@ class SecondProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'name'          => 'required|string|max:255',
+            'package_count' => 'integer|min:0', // 0 أن يكون عدد العبوات أكبر من أو يساوي
+            'unit_count'    => 'required|numeric|min:1',  // يجب أن يكون عدد الوحدات أكبر من أو يساوي 1
+            'price_usd'     => 'required|numeric|min:0.01', // يجب أن يكون السعر أكبر من 0
+            'notes'         => 'nullable|string|max:1000',  // ملاحظة اختيارية ولكن إذا كانت موجودة يجب أن تكون سلسلة نصية
         ]);
 
         SecondProduct::create($request->all());
@@ -45,7 +49,7 @@ class SecondProductController extends Controller
 
     public function show(SecondProduct $second_product)
     {
-        $product=$second_product;
+        $product = $second_product;
         $currencyRate = CurrencyRate::latest()->first(); // جلب أحدث سعر صرف
 
         if (!$currencyRate) {
@@ -57,7 +61,6 @@ class SecondProductController extends Controller
         $priceInSyp = $product->price * $currencyRate->usd_to_syp;
 
         return view('SecondProducts.product-price', compact('product', 'priceInTry', 'priceInSyp'));
-
     }
 
 
@@ -69,9 +72,11 @@ class SecondProductController extends Controller
     public function update(Request $request, SecondProduct $SecondProduct)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'name'          => 'required|string|max:255',
+            'package_count' => 'integer|min:0', // 0 أن يكون عدد العبوات أكبر من أو يساوي
+            'unit_count'    => 'required|numeric|min:1',  // يجب أن يكون عدد الوحدات أكبر من أو يساوي 1
+            'price_usd'     => 'required|numeric|min:0.01', // يجب أن يكون السعر أكبر من 0
+            'notes'         => 'nullable|string|max:1000',  // ملاحظة اختيارية ولكن إذا كانت موجودة يجب أن تكون سلسلة نصية
         ]);
 
         $SecondProduct->update($request->all());
@@ -84,4 +89,28 @@ class SecondProductController extends Controller
         $SecondProduct->delete();
         return redirect()->route('second-products.index')->with('delete', 'تم حذف المنتج بنجاح!');
     }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new SecondProductsImport, $request->file('excel_file'));
+
+        return redirect()->route('second-products.index')->with('add', 'تم استيراد البيانات بنجاح!');
+    }
+    public function reduceUnit($id)
+    {
+        $product = SecondProduct::findOrFail($id);
+
+        if ($product->unit_count > 0) {
+            $product->unit_count -= 1;
+            $product->save();
+
+            return redirect()->back()->with('update', 'تم إنقاص قطعة من المنتج.');
+        }
+
+        return redirect()->back()->with('error', 'لا يوجد وحدات متاحة.');
+    }
+
 }
