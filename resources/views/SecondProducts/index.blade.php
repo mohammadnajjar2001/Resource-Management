@@ -106,15 +106,20 @@
                             </form>
 
                             <!-- زر السلة لتقليل عدد الوحدات -->
-                            <form action="{{ route('second-products.reduce', $product->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('second-products.reducePlus', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-secondary">
-                                    <i class="bi bi-cart3"></i>
+                                    <i class="bi bi-dash-circle"></i>
                                 </button>
                             </form>
-
+                            <!-- زر السلة لزيادة عدد الوحدات -->
+                            <form action="{{ route('second-products.reduceMinus', $product->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-secondary">
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+                            </form>
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>

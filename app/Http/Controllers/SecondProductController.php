@@ -112,5 +112,15 @@ class SecondProductController extends Controller
 
         return redirect()->back()->with('error', 'لا يوجد وحدات متاحة.');
     }
+    public function reduceUnit2($id)
+    {
+        $product = SecondProduct::findOrFail($id);
+
+
+            $product->unit_count += 1;
+            $product->save();
+
+            return redirect()->back()->with('add', 'تم زيادة قطعة من المنتج.');
+    }
 
 }

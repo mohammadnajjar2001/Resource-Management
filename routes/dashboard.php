@@ -17,7 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('second-products', SecondProductController::class);
 
     Route::post('/products/import', [SecondProductController::class, 'import'])->name('products.import');
-    Route::post('/second-products/{id}/reduce-unit', [SecondProductController::class, 'reduceUnit'])->name('second-products.reduce');
+    Route::post('/second-products/{id}/reduce-unit-plus', [SecondProductController::class, 'reduceUnit'])->name('second-products.reducePlus');
+    Route::post('/second-products/{id}/reduce-unit-minus', [SecondProductController::class, 'reduceUnit2'])->name('second-products.reduceMinus');
 
     Route::get('calculator', function () {
         return view('pages.calculator');
